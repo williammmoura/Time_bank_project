@@ -6,26 +6,32 @@
     <title>Banco de horas</title>
 </head>
 <body>
+    <form id="time_form">
+    <fieldset>
+        <legend>Jornada diária de Trabalho</legend>
+
+        <label for="daily_hours">Horas diárias:</label>
+        <input type="time" id="daily_hours" required>
+    </fieldset>
+
     <fieldset>
         <legend>Dados do registro de horas</legend>
-        <form action="" id="time_form">
-        
-            <label for="start_time">Hora de entrada:</label>
-            <input type="text" id="start_time" placeholder="HH:MM" required>
-            
-            <label for="break_start">Hora de início do intervalo:</label>
-            <input type="text" id="break_start" placeholder="HH:MM">
-            
-            <label for="break_end">Hora de término do intervalo:</label>
-            <input type="text" id="break_end" placeholder="HH:MM">
-            
-            <label for="end_time">Hora de término:</label>
-            <input type="text" id="end_time" placeholder="HH:MM" required>
-            
-            <button type="submit">Registrar horas</button>
 
-        </form>
+        <label for="start_time">Hora de entrada:</label>
+        <input type="time" id="start_time" required>
+
+        <label for="break_start">Hora de início do intervalo:</label>
+        <input type="time" id="break_start" required>
+
+        <label for="break_end">Hora de término do intervalo:</label>
+        <input type="time" id="break_end" required>
+
+        <label for="end_time">Hora de término:</label>
+        <input type="time" id="end_time" required>
+
+        <button type="submit">Registrar horas</button>
     </fieldset>
+</form>
 </body>
 <script src="../scripts/script.js"></script>
 </html>
