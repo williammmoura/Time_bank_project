@@ -1,7 +1,12 @@
+/*
 // ==============================
 // 1. EVENTOS (liga HTML com lógica)
 // ==============================
 const form = document.getElementById('time_form');//Procura no HTML um elemento com id time_form e o armazena na variável form
+const totalWorkedEl = document.getElementById('total_worked'); //Procura no HTML um elemento com id total_worked e o armazena na variável totalWorkedEl
+const expectedWorkEl = document.getElementById('expected_work');
+const balanceEl = document.getElementById('balance');
+const overtimeEl = document.getElementById('overtime');
 form.addEventListener("submit", handleSubmit);//Quando o usuário enviar o formulário, execute a função handleSubmit
 
 // ==============================
@@ -20,7 +25,7 @@ function handleSubmit(event) {
     }
 
     //Captura dos valores dos campos de inputs (tudo isso é string))
-    const dailyHours = document.getElementById('daily_hours').value;
+    const dailyHoursInput = document.getElementById('daily_hours').value;
 
     const startTime = document.getElementById('start_time').value;
     const breakStart = document.getElementById('break_start').value;
@@ -28,7 +33,7 @@ function handleSubmit(event) {
     const endTime = document.getElementById('end_time').value;
 
     //Conversão dos horários para minutos. Dentro da função timeToMinutes há "const parts = time.split(':');" que divide o horário em horas e minutos, e depois "const [hours, minutes] = parts.map(Number)" converte ambos para números usando "map(Number)". A função também inclui validações para garantir que os horários estejam no formato correto e dentro dos limites permitidos.
-    const expectedDailyMinutes = timeToMinutes(dailyHours);
+    const expectedDailyMinutes = timeToMinutes(dailyHoursInput);
 
     const start = timeToMinutes(startTime);
     const breakStartMinutes = timeToMinutes(breakStart);
@@ -65,30 +70,55 @@ function handleSubmit(event) {
     const morningWork = normBreakS - normStart; //Cálculo do período da manhã
     const afternoonWork = normEnd - normBreakE; //Cálculo do período da tarde
 
-    //Validação de duração,ou seja, verifica se os períodos de trabalho da manhã e da tarde estão dentro do limite permitido de 6 horas consecutivas (360 minutos). Se algum dos períodos exceder esse limite, um alerta é exibido para o usuário, indicando que a duração de trabalho é inválida.
-    if(!isValidDuration(morningWork) || !isValidDuration(afternoonWork)) {
-        alert("Duração de trabalho inválida. O período de trabalho não pode exceder 6 horas consecutivas.");
-        return;
-    }
-
     const total = morningWork + afternoonWork; //Total de horas trabalhadas
+
+    const breakDuration = normBreakE - normBreakS; //Duração do intervalo em minutos, calculada subtraindo o horário de início do intervalo (normBreakS) do horário de término do intervalo (normBreakE)
 
     //SALDO DE HORAS
     const dailyBalanceMinutes = total - expectedDailyMinutes; //Calcula o saldo de horas em minutos, subtraindo o total de horas trabalhadas do total de horas esperadas (dailyHours convertido para minutos)
+    const MAX_OVERTIME_MINUTES = 120; //Definição de um limite máximo de horas extras em minutos (2 horas extras)
 
-    console.log(`Total trabalhado: ${minutesToHours(total)}`);
-    console.log(`Esperado: ${minutesToHours(expectedDailyMinutes)}`);
+    //Mostra os resultados para o usuário
+    // TOTAL TRABALHADO
+    totalWorkedEl.textContent = `Total trabalhado: ${minutesToHours(total)}`;
+    // JORNADA ESPERADA
+    expectedWorkEl.textContent = `Jornada esperada: ${minutesToHours(expectedDailyMinutes)}`;
 
-    if(dailyBalanceMinutes > 0) {
-        console.log(`Saldo positivo: ${minutesToHours(dailyBalanceMinutes)}`);
-    } else if(dailyBalanceMinutes < 0) {
-        console.log(`Saldo negativo: -${minutesToHours(-dailyBalanceMinutes)}`);
+    //Alerta: mais de 6 horas consecutivas de trabalho
+    if(morningWork > 360 || afternoonWork > 360) {
+        alert("ATEÇÃO! Período superior a 6 horas consecutivas de trabalho.")
+    }
+
+    //Alerta: intervalo inferior a 60 minutos
+    if(breakDuration < 60) {
+        alert("ATENÇÃO! O intervalo é inferior a 1 hora.");
+    }
+
+    //Alerta: mais de 2 horas extras no dia
+    if(dailyBalanceMinutes > MAX_OVERTIME_MINUTES) {
+        alert("ATENÇÃO! Você tem mais de 2 horas extras no dia.");
+    }
+
+    //console.log(`Esperado: ${minutesToHours(expectedDailyMinutes)}`);
+
+    //Saldo de horas
+    if (dailyBalanceMinutes > 0) {
+        balanceEl.textContent = `Saldo positivo: +${minutesToHours(dailyBalanceMinutes)}`;
+    } else if (dailyBalanceMinutes < 0) {
+        balanceEl.textContent = `Saldo negativo: -${minutesToHours(Math.abs(dailyBalanceMinutes))}`;
     } else {
-        console.log("Saldo neutro: Você trabalhou exatamente o esperado.");
+        balanceEl.textContent = "Saldo neutro: jornada cumprida";
+    }
+
+    //Horas extras
+    if (dailyBalanceMinutes > 0) {
+        overtimeEl.textContent = `Horas extras: ${minutesToHours(dailyBalanceMinutes)}`;
+    } else {
+        overtimeEl.textContent = "Horas extras: 0 horas";
     }
 
     const result = minutesToHours(total); //Converte o total de minutos para o formato de horas e minutos usando a função minutesToHours
-    console.log(`Total de horas trabalhadas: ${result}`);
+    //console.log(`Total de horas trabalhadas: ${result}`);
 }
 
 // ==============================
@@ -102,11 +132,6 @@ function timeToMinutes(time) {
     const [hours, minutes] = time.split(':').map(Number); //Converte as partes do horário para números usando map(Number) e desestruturação para atribuir os valores a hours e minutes
 
     return hours * 60 + minutes; //Converte o horário para minutos 
-}
-
-//Validação de período consecutivo de trabalho (nesta regra será permitido o período máximo de 6 horas consecutivas)
-function isValidDuration(duration) {
-    return duration >= 0 && duration <= 360; //Limite de 360 minutos (6 horas) para um período de trabalho consecutivo
 }
 
 //Função para converter minutos de volta para o formato de horas e minutos 
