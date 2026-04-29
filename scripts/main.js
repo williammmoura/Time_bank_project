@@ -2,17 +2,17 @@
 
 // Importação das funções de lógica e UI para serem usadas no script principal
 import { time_to_minutes, minutes_to_hours, normalize_times } from './logic.js';
-import { render_results } from './ui.js';
+import { render_results, render_timeline } from './ui.js';
 
 // Seleção do formulário e dos elementos do DOM onde os resultados serão exibidos
 const form = document.getElementById('time_form');
 
 // Elementos do DOM para exibir os resultados
 const ui_elements = {
-    total_worked_display: document.getElementById('total_worked'),
-    expected_work_display: document.getElementById('expected_work'),
-    balance_display: document.getElementById('balance'),
-    overtime_display: document.getElementById('overtime')
+    card_total_worked: document.getElementById('card_total_worked'),
+    card_expected_work: document.getElementById('card_expected_work'),
+    card_balance: document.getElementById('card_balance'),
+    card_overtime: document.getElementById('card_overtime')
 };
 
 // Adiciona um ouvinte de evento para o envio do formulário, chamando a função handleSubmit quando o formulário for enviado
@@ -28,9 +28,9 @@ function handleSubmit(event) {
         return;
     }
 
-    //=====================================================================
+    //====================================================================
     // ENTRADAS (conversão dos horários para minutos)
-    //=====================================================================
+    //====================================================================
     const expected_daily_work_minutes = time_to_minutes(document.getElementById('expected_daily_hours').value);
     const work_start_minutes = time_to_minutes(document.getElementById('work_start_time').value);
     const break_start_minutes = time_to_minutes(document.getElementById('break_start_time').value);
@@ -88,4 +88,14 @@ function handleSubmit(event) {
         ui_elements,
         { minutes_to_hours }
     );
+
+    //=====================================================================
+    // RENDERIZAÇÃO DA LINHA DO TEMPO
+    //=====================================================================
+    render_timeline({ //Chama a função renderTimeline para exibir a linha do tempo visual dos horários, passando um objeto com os horários normalizados (normalizedWorkStart, normalizedBreakStart, normalizedBreakEnd, normalizedWorkEnd) para que a linha do tempo possa ser desenhada de forma proporcional à duração de cada período de trabalho e intervalo.
+        normalized_work_start,
+        normalized_break_start,
+        normalized_break_end,
+        normalized_work_end
+    });
 }

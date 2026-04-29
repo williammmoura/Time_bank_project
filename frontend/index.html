@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./style/style.css">
     <title>Banco de horas</title>
 </head>
 <body>
@@ -33,11 +34,23 @@
     </fieldset>
 </form>
 
-    <div id="result">
-        <p id="total_worked"></p>
-        <p id="expected_work"></p>
-        <p id="balance"></p>
-        <p id="overtime"></p>
+    <div id="dashboard">
+
+        <div class="card_container">
+            <div class="card" id="card_total_worked"></div>
+            <div class="card" id="card_expected_work"></div>
+            <div class="card" id="card_balance"></div>
+            <div class="card" id="card_overtime"></div>
+        </div>
+
+        <div id="timeline_container">
+            <div id="timeline_bar"></div>
+        </div>
+
+        <div id="progress_container">
+            <div id="progress_bar"></div>
+        </div>
+        
     </div>
 </body>
 <script type="module" src="../scripts/main.js"></script>
