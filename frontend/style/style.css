@@ -31,9 +31,9 @@
 }
 
 /* CORES SEMANTICAS */
-.positive { background-color: #e8f5e9; }
-.negative { background-color: #ffebee; }
-.neutral { background-color: #eeeeee; }
+.positive { background-color: #91ff9a; }
+.negative { background-color: #ff8e8e; }
+.neutral { background-color: #fff88f; }
 
 /* TIMELINE */
 #timeline_bar {
