@@ -34,24 +34,45 @@
     </fieldset>
 </form>
 
-    <div id="dashboard">
+<div id="dashboard">
 
-        <div class="card_container">
-            <div class="card" id="card_total_worked"></div>
-            <div class="card" id="card_expected_work"></div>
-            <div class="card" id="card_balance"></div>
-            <div class="card" id="card_overtime"></div>
+    <h1 class="dashboard_title">📊 Banco de Horas</h1>
+
+    <div class="cards_container">
+        <div class="card" id="card_total_worked">
+            <span class="card_icon">⏱️</span>
+            <div class="card_content"></div>
         </div>
 
-        <div id="timeline_container">
-            <div id="timeline_bar"></div>
+        <div class="card" id="card_expected_work">
+            <span class="card_icon">📅</span>
+            <div class="card_content"></div>
         </div>
 
+        <div class="card" id="card_balance">
+            <span class="card_icon">⚖️</span>
+            <div class="card_content"></div>
+        </div>
+
+        <div class="card" id="card_overtime">
+            <span class="card_icon">📈</span>
+            <div class="card_content"></div>
+        </div>
+    </div>
+
+    <div>
+        <p><strong>Progresso do dia</strong></p>
         <div id="progress_container">
             <div id="progress_bar"></div>
         </div>
-        
     </div>
+
+    <div>
+        <p><strong>Linha do tempo</strong></p>
+        <div id="timeline_bar"></div>
+    </div>
+
+</div>
 </body>
 <script type="module" src="../scripts/main.js"></script>
 </html>

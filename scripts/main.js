@@ -15,6 +15,9 @@ const ui_elements = {
     card_overtime: document.getElementById('card_overtime')
 };
 
+console.log(ui_elements);
+console.log(ui_elements.card_total_worked);
+
 // Adiciona um ouvinte de evento para o envio do formulário, chamando a função handleSubmit quando o formulário for enviado
 form.addEventListener("submit", handleSubmit);
 

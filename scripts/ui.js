@@ -26,35 +26,35 @@ export function render_results(//função para renderizar os resultados na   int
     //===================================================================
 
     // CARDS
-    card_total_worked.textContent = 
-    `Total trabalhado: ${minutes_to_hours(total_worked_minutes)}`; //Exibe o total de horas trabalhadas no elemento card_total_worked, formatando o valor usando a função minutes_to_hours
+    card_total_worked.querySelector('.card_content').textContent =
+    `Total: ${minutes_to_hours(total_worked_minutes)}`; //Atualiza o conteúdo do card de total de horas trabalhadas, utilizando a função auxiliar minutesToHours para formatar os minutos em um formato legível (horas e minutos) para o usuário
 
-    card_expected_work.textContent = 
-    `Jornada esperada: ${minutes_to_hours(expected_daily_work_minutes)}`; //Exibe a jornada esperada no elemento card_expected_work, formatando o valor usando a função minutes_to_hours
+    card_expected_work.querySelector('.card_content').textContent =
+    `Esperado: ${minutes_to_hours(expected_daily_work_minutes)}`; //Atualiza o conteúdo do card de horas esperadas, utilizando a função auxiliar minutesToHours para formatar os minutos em um formato legível (horas e minutos) para o usuário
 
     // SALDO DE HORAS + HORAS EXTRAS
     if (daily_work_balance_minutes > 0) {
 
-        card_balance.textContent = 
+        card_balance.querySelector('.card_content').textContent = 
         `Saldo positivo: +${minutes_to_hours(daily_work_balance_minutes)}`;
         card_balance.className = 'card positive'; //Adiciona uma classe CSS para estilizar o saldo positivo, indicando visualmente que o usuário tem um saldo favorável
 
-        card_overtime.textContent =
+        card_overtime.querySelector('.card_content').textContent =
         `Horas extras: ${minutes_to_hours(daily_work_balance_minutes)}`;
 
 
     } else if (daily_work_balance_minutes < 0) {
-        card_balance.textContent = 
+        card_balance.querySelector('.card_content').textContent = 
         `Saldo negativo: -${minutes_to_hours(Math.abs(daily_work_balance_minutes))}`;
         card_balance.className = 'card negative'; //Adiciona uma classe CSS para estilizar o saldo negativo, indicando visualmente que o usuário tem um saldo desfavorável
 
-        card_overtime.textContent = "Horas extras: 0 horas";
+        card_overtime.querySelector('.card_content').textContent = "Horas extras: 0 horas"; //Atualiza o conteúdo do card de horas extras para indicar que não há horas extras, já que o saldo é negativo
 
     } else {
-        card_balance.textContent = "Saldo neutro: jornada cumprida";
+        card_balance.querySelector('.card_content').textContent = "Saldo neutro: jornada cumprida";
         card_balance.className = 'card neutral'; //Adiciona uma classe CSS para estilizar o saldo neutro, indicando visualmente que o usuário cumpriu exatamente a jornada esperada
 
-        card_overtime.textContent = "Horas extras: 0 horas";
+        card_overtime.querySelector('.card_content').textContent = "Horas extras: 0 horas"; //Atualiza o conteúdo do card de horas extras para indicar que não há horas extras, já que o saldo é neutro
     }
 
     //PROGRESS BAR
@@ -96,19 +96,52 @@ export function render_timeline({ //Função para renderizar a linha do tempo vi
 
     const total_duration = normalized_work_end - normalized_work_start; //Calcula a duração total do período de trabalho, considerando a virada de dia, subtraindo o horário de início do trabalho do horário de término do trabalho
 
-    function create_segment(duration, class_name) { //Função auxiliar para criar um segmento da linha do tempo, recebendo a duração do segmento e a classe CSS para estilização
+    function minutes_to_label(minutes) { //Função auxiliar para converter minutos em um formato de horário legível (HH:MM), facilitando a exibição dos horários na linha do tempo de forma compreensível para o usuário
+        const h = Math.floor(minutes / 60) % 24;
+        const m = minutes % 60;
+        return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
+    }
+
+    function create_segment(duration, class_name, start, end) { //Função auxiliar para criar um segmento da linha do tempo, recebendo a duração do segmento e a classe CSS para estilização
         const segment = document.createElement('div'); //Cria um elemento div para representar o segmento da linha do tempo
         segment.classList.add('timeline_segment', class_name); //Adiciona as classes CSS para estilizar o segmento de acordo com o tipo (trabalho, intervalo, etc.)
         
         const percentage = (duration / total_duration) * 100; //Calcula a largura do segmento como uma porcentagem da duração total, permitindo que a linha do tempo seja dimensionada proporcionalmente
         segment.style.width = `${percentage}%`; //Define a largura do segmento usando a porcentagem calculada
+
+        //Adiciona um rótulo ao segmento para indicar o horário correspondente, utilizando a função auxiliar minutesToLabel para formatar os minutos em um formato de horário legível (HH:MM) para o usuário
+        segment.textContent = 
+        `${minutes_to_label(start)} - ${minutes_to_label(end)}`;
+        segment.style.fontSize = '0.7rem';
+        segment.style.color = '#fff';
+        segment.style.display = 'flex';
+        segment.style.alignItems = 'center';
+        segment.style.justifyContent = 'center';
+
         return segment;
     }
 
     //SEGMENTOS da linha do tempo
-    const work_start_segment = create_segment(normalized_break_start - normalized_work_start, 'work_segment'); //Segmento do período de trabalho antes do intervalo
-    const break_segment = create_segment(normalized_break_end - normalized_break_start, 'break_segment'); //Segmento do intervalo
-    const work_end_segment = create_segment(normalized_work_end - normalized_break_end, 'work_segment'); //Segmento do período de trabalho após o intervalo
+    const work_start_segment = create_segment( // Segmento do período de trabalho antes do intervalo, calculado pela diferença entre o horário de início do trabalho e o horário de início do intervalo, utilizando a função auxiliar createSegment para criar o elemento visual correspondente na linha do tempo
+        normalized_break_start - normalized_work_start,
+        'work_segment',
+        normalized_work_start,
+        normalized_break_start
+    );
+    
+    const break_segment = create_segment(
+        normalized_break_end - normalized_break_start,
+        'break_segment',
+        normalized_break_start,
+        normalized_break_end
+    );
+
+    const work_end_segment = create_segment(
+        normalized_work_end - normalized_break_end,
+         'work_segment',
+         normalized_break_end,
+         normalized_work_end
+    );
 
     //Adiciona os segmentos à barra da linha do tempo
     timeline_bar.appendChild(work_start_segment);
