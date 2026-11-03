@@ -8,71 +8,71 @@
 </head>
 <body>
     <form id="time_form">
-    <fieldset>
-        <legend>Jornada diária de Trabalho</legend>
+        <fieldset>
+            <legend>Jornada diária de Trabalho</legend>
 
-        <label for="expected_daily_hours">Duração da jornada de trabalho:</label>
-        <input type="time" id="expected_daily_hours" required>
-    </fieldset>
+            <label for="expected_daily_hours">Duração da jornada de trabalho:</label>
+            <input type="time" id="expected_daily_hours" required>
+        </fieldset>
 
-    <fieldset>
-        <legend>Dados do registro de horas</legend>
+        <fieldset>
+            <legend>Dados do registro de horas</legend>
 
-        <label for="work_start_time">Hora de entrada:</label>
-        <input type="time" id="work_start_time" required>
+            <label for="work_start_time">Hora de entrada:</label>
+            <input type="time" id="work_start_time" required>
 
-        <label for="break_start_time">Hora de início do intervalo:</label>
-        <input type="time" id="break_start_time" required>
+            <label for="break_start_time">Hora de início do intervalo:</label>
+            <input type="time" id="break_start_time" required>
 
-        <label for="break_end_time">Hora de término do intervalo:</label>
-        <input type="time" id="break_end_time" required>
+            <label for="break_end_time">Hora de término do intervalo:</label>
+            <input type="time" id="break_end_time" required>
 
-        <label for="work_end_time">Hora de término:</label>
-        <input type="time" id="work_end_time" required>
+            <label for="work_end_time">Hora de término:</label>
+            <input type="time" id="work_end_time" required>
 
-        <button type="submit">Registrar horas</button>
-    </fieldset>
-</form>
+            <button type="submit">Registrar horas</button>
+        </fieldset>
+    </form>
 
-<div id="dashboard">
+    <div id="dashboard">
 
-    <h1 class="dashboard_title">📊 Banco de Horas</h1>
+        <h1 class="dashboard_title">📊 Banco de Horas</h1>
 
-    <div class="cards_container">
-        <div class="card" id="card_total_worked">
-            <span class="card_icon">⏱️</span>
-            <div class="card_content"></div>
+        <div class="cards_container">
+            <div class="card" id="card_total_worked">
+                <span class="card_icon">⏱️</span>
+                <div class="card_content"></div>
+            </div>
+
+            <div class="card" id="card_expected_work">
+                <span class="card_icon">📅</span>
+                <div class="card_content"></div>
+            </div>
+
+            <div class="card" id="card_balance">
+                <span class="card_icon">⚖️</span>
+                <div class="card_content"></div>
+            </div>
+
+            <div class="card" id="card_overtime">
+                <span class="card_icon">📈</span>
+                <div class="card_content"></div>
+            </div>
         </div>
 
-        <div class="card" id="card_expected_work">
-            <span class="card_icon">📅</span>
-            <div class="card_content"></div>
+        <div>
+            <p><strong>Progresso do dia</strong></p>
+            <div id="progress_container">
+                <div id="progress_bar"></div>
+            </div>
         </div>
 
-        <div class="card" id="card_balance">
-            <span class="card_icon">⚖️</span>
-            <div class="card_content"></div>
+        <div>
+            <p><strong>Linha do tempo</strong></p>
+            <div id="timeline_bar"></div>
         </div>
 
-        <div class="card" id="card_overtime">
-            <span class="card_icon">📈</span>
-            <div class="card_content"></div>
-        </div>
     </div>
-
-    <div>
-        <p><strong>Progresso do dia</strong></p>
-        <div id="progress_container">
-            <div id="progress_bar"></div>
-        </div>
-    </div>
-
-    <div>
-        <p><strong>Linha do tempo</strong></p>
-        <div id="timeline_bar"></div>
-    </div>
-
-</div>
 </body>
 <script type="module" src="../scripts/main.js"></script>
 </html>
