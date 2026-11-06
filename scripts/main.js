@@ -2,7 +2,10 @@
 
 // Importação das funções de lógica e UI para serem usadas no script principal
 import { time_to_minutes, minutes_to_hours, normalize_times } from './logic.js';
-import { render_results, render_timeline } from './ui.js';
+import { render_results, render_timeline, setup_theme_toggle } from './ui.js';
+
+// Inicializa o botão de alternância de tema
+setup_theme_toggle();
 
 // Seleção do formulário e dos elementos do DOM onde os resultados serão exibidos
 const form = document.getElementById('time_form');

@@ -1,63 +1,230 @@
-/* RESET BASE */
+
+/* =================================
+   1. RESET BASE
+================================= */
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f6f8;
-    padding: 1.5rem;
+
+/* =================================
+   2. VARIÁVEIS DO TEMA CLARO
+================================= */
+
+:root {
+    --background_color: #f1f5f9;
+    --card_background: #ffffff;
+    --text_color: #1e293b;
+    --secondary_text_color: #64748b;
+    --border_color: #cbd5e1;
+
+    --button_background: #2563eb;
+    --button_text: #ffffff;
+
+    --progress_background: #e2e8f0;
+    --timeline_background: #e2e8f0;
 }
 
-/* CONTAINER PRINCIPAL */
+
+/* =================================
+   3. VARIÁVEIS DO TEMA ESCURO
+================================= */
+
+body.dark_mode {
+    --background_color: #111827;
+    --card_background: #1f2937;
+    --text_color: #f8fafc;
+    --secondary_text_color: #9ca3af;
+    --border_color: #374151;
+
+    --button_background: #3b82f6;
+    --button_text: #ffffff;
+
+    --progress_background: #374151;
+    --timeline_background: #374151;
+
+    color-scheme: dark;
+}
+
+
+/* =================================
+   4. ESTILOS GERAIS
+================================= */
+
+body {
+    font-family: Arial, sans-serif;
+
+    background-color: var(--background_color);
+    color: var(--text_color);
+
+    padding: 1.5rem;
+
+    transition:
+        background-color 0.3s ease,
+        color 0.3s ease;
+}
+
+
+/* =================================
+   5. BOTÃO DO TEMA
+================================= */
+
+#theme_toggle {
+    background-color: var(--button_background);
+    color: var(--button_text);
+
+    border: none;
+    border-radius: 0.5rem;
+
+    padding: 0.7rem 1rem;
+
+    cursor: pointer;
+}
+
+
+/* =================================
+   6. FORMULÁRIO
+================================= */
+
+fieldset {
+    border: 1px solid var(--border_color);
+    color: var(--text_color);
+
+    padding: 1rem;
+}
+
+input {
+    background-color: var(--card_background);
+    color: var(--text_color);
+
+    border: 1px solid var(--border_color);
+
+    padding: 0.5rem;
+}
+
+
+/* =================================
+   7. DASHBOARD
+================================= */
+
 #dashboard {
     max-width: 900px;
     margin: 0 auto;
+
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
 }
 
-/* TÍTULO */
+
+/* =================================
+   8. TÍTULO
+================================= */
+
 .dashboard_title {
     font-size: 1.5rem;
     font-weight: bold;
-    color: #333;
+
+    color: var(--text_color);
 }
 
-/* GRID DE CARDS */
+
+/* =================================
+   9. GRID DE CARDS
+================================= */
+
 .cards_container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+
+    grid-template-columns:
+        repeat(auto-fit, minmax(12rem, 1fr));
+
     gap: 1rem;
 }
 
-/* CARD */
+
+/* =================================
+   10. CARDS
+================================= */
+
 .card {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+
     padding: 1rem;
     border-radius: 0.8rem;
-    background-color: white;
-    box-shadow: 0 0.2rem 0.5rem rgba(0,0,0,0.1);
+
+    background-color: var(--card_background);
+    color: var(--text_color);
+
+    border: 1px solid var(--border_color);
+
+    box-shadow: 0 0.2rem 0.5rem rgba(0, 0, 0, 0.1);
+
     font-size: 0.9rem;
-    transition: transform 0.2s ease;
+
+    transition:
+        background-color 0.3s ease,
+        color 0.3s ease,
+        transform 0.2s ease;
 }
 
 .card:hover {
     transform: translateY(-2px);
 }
 
-/* CORES SEMÂNTICAS */
-.positive { background-color: #e8f5e9; }
-.negative { background-color: #ffebee; }
-.neutral { background-color: #eeeeee; }
 
-/* PROGRESSO */
+/* =================================
+   11. CORES SEMÂNTICAS DOS CARDS
+================================= */
+
+.positive {
+    background-color: var(--card_background);
+    border-left: 4px solid #22c55e;
+}
+
+.negative {
+    background-color: var(--card_background);
+    border-left: 4px solid #ef4444;
+}
+
+.neutral {
+    background-color: var(--card_background);
+    border-left: 4px solid #64748b;
+}
+
+
+/* =================================
+   12. CONTEÚDO DOS CARDS
+================================= */
+
+.card_icon {
+    font-size: 1.5rem;
+}
+
+.card_content {
+    display: flex;
+    flex-direction: column;
+
+    font-size: 0.85rem;
+    color: var(--secondary_text_color);
+}
+
+
+/* =================================
+   13. BARRA DE PROGRESSO
+================================= */
+
 #progress_container {
     width: 100%;
     height: 1.2rem;
-    background-color: #ddd;
+
+    background-color: var(--progress_background);
+
     border-radius: 0.5rem;
     overflow: hidden;
 }
@@ -65,18 +232,27 @@ body {
 #progress_bar {
     height: 100%;
     width: 0%;
+
     background-color: #2196f3;
+
     transition: width 0.4s ease;
 }
 
-/* TIMELINE */
+
+/* =================================
+   14. TIMELINE
+================================= */
+
 #timeline_bar {
     display: flex;
+
     height: 2.5rem;
     width: 100%;
+
     border-radius: 0.5rem;
     overflow: hidden;
-    background-color: #eee;
+
+    background-color: var(--timeline_background);
 }
 
 .timeline_segment {
@@ -91,24 +267,13 @@ body {
     background-color: #f44336;
 }
 
-.card {
-    display: flex;
-    gap: 0.8rem;
-    align-items: center;
-}
 
-.card_icon {
-    font-size: 1.5rem;
-}
+/* =================================
+   15. RESPONSIVIDADE
+================================= */
 
-.card_content {
-    display: flex;
-    flex-direction: column;
-    font-size: 0.85rem;
-}
-
-/* RESPONSIVO */
 @media (max-width: 600px) {
+
     body {
         padding: 1rem;
     }

@@ -148,3 +148,67 @@ export function render_timeline({ //Função para renderizar a linha do tempo vi
     timeline_bar.appendChild(break_segment);
     timeline_bar.appendChild(work_end_segment);
 }
+
+// ======================================================
+// CONFIGURAÇÃO DO TEMA (CLARO / ESCURO)
+// ======================================================
+
+export function setup_theme_toggle() { //Função para configurar o botão de alternância de tema, permitindo que o usuário alterne entre o tema claro e escuro, armazenando a preferência no localStorage para persistência entre sessões.
+
+    const theme_toggle = document.getElementById('theme_toggle'); //Obtém o elemento do botão de alternância de tema no DOM.
+
+    //Verifica se o botão existe antes de adicionar o event listener, garantindo que o código não quebre caso o elemento não esteja presente na página.
+    if (!theme_toggle){
+        return;
+    }
+
+    //Recupera a preferência de tema do localStorage, permitindo que o tema escolhido pelo usuário seja mantido entre sessões.
+    const saved_theme = localStorage.getItem('selected_theme');
+
+    //Verifica se o usuário escolheu o tema escuro
+    const dark_mode_enebled = saved_theme === 'dark_mode';
+
+    //Aplica o tema salvo ao body
+    document.body.classList.toggle('dark_mode', dark_mode_enebled);
+
+    //Atualiza o texto do botão
+    update_theme_button(theme_toggle);
+
+    // Aguarda o clique do usuário
+    theme_toggle.addEventListener('click', function() {
+
+        // Alterna a classe dark_mode no body
+        document.body.classList.toggle('dark_mode');
+
+        // Verifica se o modo escuro está ativo
+        const dark_mode_enabled =
+            document.body.classList.contains('dark_mode');
+
+        // Salva a preferência no navegador
+        if (dark_mode_enabled) {
+            localStorage.setItem('selected_theme', 'dark_mode');
+        } else {
+            localStorage.setItem('selected_theme', 'light_mode');
+        }
+
+        // Atualiza o texto do botão
+        update_theme_button(theme_toggle);
+
+    });
+}
+
+// =============================================
+// ATUALIZAÇÃO DO TEXTO DO BOTÃO
+// =============================================
+
+function update_theme_button(theme_toggle) {
+
+    const dark_mode_enabled =
+        document.body.classList.contains('dark_mode');
+
+    if (dark_mode_enabled) {
+        theme_toggle.textContent = 'Ativar modo claro';
+    } else {
+        theme_toggle.textContent = 'Ativar modo escuro';
+    }
+}
